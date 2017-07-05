@@ -1,4 +1,5 @@
 import numpy as np
+import scipy.linalg
 import scipy.spatial
 
 
@@ -35,6 +36,18 @@ def vec_for(word, word_to_vec):
             return np.zeros(300)
 
 
+def norm(vector):
+    l2_norm = scipy.linalg.norm(vector)
+    if l2_norm == 0:
+        return vector
+    else:
+        return vector / l2_norm
+
+
+def norm_euc(first, second):
+    return scipy.spatial.distance.euclidean(norm(first), norm(second))
+
+
 def answer(item, word_to_vec, distance):
     question = (vec_for(item['question'][0], word_to_vec) -
                 vec_for(item['question'][1], word_to_vec))
@@ -48,14 +61,26 @@ def score(items, word_to_vec):
     for item in items:
         item['euclidean'] = answer(item, word_to_vec,
                                    scipy.spatial.distance.euclidean)
+        item['norm_euc'] = answer(item, word_to_vec,
+                                  norm_euc)
+        item['dot_prod'] = answer(item, word_to_vec,
+                                  np.dot)
         item['cosine'] = answer(item, word_to_vec,
                                 scipy.spatial.distance.cosine)
     euc_correct = sum(item['correct'] == item['euclidean'] for item in items)
     print 'euclidean correct: {} of {} ({})'.format(
         euc_correct, len(items), float(euc_correct) / len(items))
+    norm_euc_correct = sum(item['correct'] == item['norm_euc']
+                           for item in items)
+    print 'norm_euc correct: {} of {} ({})'.format(
+        norm_euc_correct, len(items), float(norm_euc_correct) / len(items))
+    dot_prod_correct = sum(item['correct'] == item['dot_prod']
+                           for item in items)
+    print 'dot_prod correct: {} of {} ({})'.format(
+        dot_prod_correct, len(items), float(dot_prod_correct) / len(items))
     cos_correct = sum(item['correct'] == item['cosine'] for item in items)
     print 'cosine correct: {} of {} ({})'.format(
         cos_correct, len(items), float(cos_correct) / len(items))
     agreement = sum(item['euclidean'] == item['cosine'] for item in items)
-    print 'agreement: {} of {} ({})'.format(
+    print 'euc/cos agreement: {} of {} ({})'.format(
         agreement, len(items), float(agreement) / len(items))
