@@ -1,10 +1,22 @@
 # SAT Analogies by Word Vectors
 
+This code accompanies the blog post [Word Vectors and SAT Analogies](http://planspace.org/20170705-word_vectors_and_sat_analogies/).
+
+---
+
 To populate `data/`:
 
  * Acquire `data/SAT-package-V3.txt` ([a set of 374 SAT analogy questions](https://www.aclweb.org/aclwiki/index.php?title=SAT_Analogy_Questions_(State_of_the_art))) by emailing Peter Turney.
  * Download [GloVe vectors](https://nlp.stanford.edu/projects/glove/) and unzip, providing (for example) `data/glove.6B.50d.txt`.
  * Download [word2vec vectors](https://code.google.com/archive/p/word2vec/) and gunzip, providing `data/GoogleNews-vectors-negative300.bin`.
+
+---
+
+To see how well you do on the task, run `python human.py`.
+
+---
+
+This uses Python 2.7 and a number of packages (see tops of `.py` files).
 
 ---
 
@@ -86,10 +98,10 @@ cosine correct: 166 of 374 (0.44385026738)
 agreement: 193 of 374 (0.516042780749)  # 194 when float32
 
 reading "data/glove.840B.300d.txt"
-euclidean correct: 135 of 373 (0.361930294906)
+euclidean correct: 135 of 373 (0.361930294906)  # 136 when float32
 cosine correct: 183 of 373 (0.490616621984)
 agreement: 199 of 373 (0.533512064343)
-euclidean correct: 135 of 374 (0.360962566845)
+euclidean correct: 135 of 374 (0.360962566845)  # 136 when float32
 cosine correct: 183 of 374 (0.489304812834)
 agreement: 200 of 374 (0.534759358289)
 
