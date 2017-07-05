@@ -48,6 +48,9 @@ def norm_euc(first, second):
     return scipy.spatial.distance.euclidean(norm(first), norm(second))
 
 
+def dot_prod(first, second):
+    return 0 - np.dot(first, second)
+
 def answer(item, word_to_vec, distance):
     question = (vec_for(item['question'][0], word_to_vec) -
                 vec_for(item['question'][1], word_to_vec))
@@ -64,7 +67,7 @@ def score(items, word_to_vec):
         item['norm_euc'] = answer(item, word_to_vec,
                                   norm_euc)
         item['dot_prod'] = answer(item, word_to_vec,
-                                  np.dot)
+                                  dot_prod)
         item['cosine'] = answer(item, word_to_vec,
                                 scipy.spatial.distance.cosine)
     euc_correct = sum(item['correct'] == item['euclidean'] for item in items)
